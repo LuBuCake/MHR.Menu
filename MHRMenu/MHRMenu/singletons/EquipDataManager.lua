@@ -87,6 +87,7 @@ function EquipDataManager.PlEquipPack.f_EquipmentInventoryData( plequippack ) re
 
 -- EquipmentInventoryData
 
+function EquipDataManager.EquipmentInventoryData.c_getName( equipmentinventorydata ) return equipmentinventorydata:call("getName") end
 function EquipDataManager.EquipmentInventoryData.c_isWeapon( equipmentinventorydata ) return equipmentinventorydata:call("isWeapon") end
 function EquipDataManager.EquipmentInventoryData.c_isArmor( equipmentinventorydata ) return equipmentinventorydata:call("isArmor") end
 function EquipDataManager.EquipmentInventoryData.c_getWeaponBaseData( equipmentinventorydata ) return equipmentinventorydata:call("getWeaponBaseData") end
@@ -94,15 +95,14 @@ function EquipDataManager.EquipmentInventoryData.c_getArmorBaseData( equipmentin
 
 -- WeaponBaseData
 
-function EquipDataManager.WeaponBaseData.f_Id( weaponbasedata, value ) return f_Field(weaponbasedata, "_Id") end
-function EquipDataManager.WeaponBaseData.f_SortId( weaponbasedata, value ) return f_Field(weaponbasedata, "_SortId") end
-function EquipDataManager.WeaponBaseData.f_RareType( weaponbasedata, value ) return f_Field(weaponbasedata, "_RareType") end
-function EquipDataManager.WeaponBaseData.f_ModelId( weaponbasedata, value ) return f_Field(weaponbasedata, "_ModelId") end
-function EquipDataManager.WeaponBaseData.f_BaseVal( weaponbasedata, value ) return f_Field(weaponbasedata, "_BaseVal") end
-function EquipDataManager.WeaponBaseData.f_BuyVal( weaponbasedata, value ) return f_Field(weaponbasedata, "_BuyVal") end
+function EquipDataManager.EquipmentInventoryData.c_get_DtWeaponType( weaponbasedata ) return weaponbasedata:call("get_DtWeaponType") end
 
-function EquipDataManager.WeaponBaseData.f_Slots( weaponbasedata ) return sdk.to_managed_object(f_Field_Raw(weaponbasedata, "int", 0x40)) end
-
+function EquipDataManager.WeaponBaseData.f_Id( weaponbasedata ) return f_Field(weaponbasedata, "_Id") end
+function EquipDataManager.WeaponBaseData.f_SortId( weaponbasedata ) return f_Field(weaponbasedata, "_SortId") end
+function EquipDataManager.WeaponBaseData.f_RareType( weaponbasedata, value ) return f_Field(weaponbasedata, "_RareType", value) end
+function EquipDataManager.WeaponBaseData.f_ModelId( weaponbasedata, value ) return f_Field(weaponbasedata, "_ModelId", value) end
+function EquipDataManager.WeaponBaseData.f_BaseVal( weaponbasedata, value ) return f_Field(weaponbasedata, "_BaseVal", value) end
+function EquipDataManager.WeaponBaseData.f_BuyVal( weaponbasedata, value ) return f_Field(weaponbasedata, "_BuyVal", value) end
 function EquipDataManager.WeaponBaseData.f_Atk( weaponbasedata, value ) return f_Field_Raw(weaponbasedata, "int", 0x28, value) end
 function EquipDataManager.WeaponBaseData.f_CriticalRate( weaponbasedata, value ) return f_Field_Raw(weaponbasedata, "int", 0x2C, value) end
 function EquipDataManager.WeaponBaseData.f_DefBonus( weaponbasedata, value ) return f_Field_Raw(weaponbasedata, "int", 0x30, value) end

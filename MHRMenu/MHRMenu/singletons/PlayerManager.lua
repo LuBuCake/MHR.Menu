@@ -63,8 +63,7 @@ function PlayerManager.Player.f_Sharpness_Boost_Timer( player, value ) return f_
 
 -- Player Data
 
-function PlayerManager.Player.Data.f_VitalContext( player ) return f_Field( player, "_vitalContext" ) end
-
+function PlayerManager.Player.Data.f_VitalContext( data ) return f_Field( data, "_vitalContext" ) end
 function PlayerManager.Player.Data.f_Health( data, value ) return f_Field( data, "_r_Vital", value ) end
 function PlayerManager.Player.Data.f_Health_Max( data, value ) return f_Field( data, "_vitalMax", value ) end
 function PlayerManager.Player.Data.f_Health_Keep( data, value ) return f_Field( data, "_vitalKeep", value ) end

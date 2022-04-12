@@ -291,6 +291,22 @@ function UI.BuildNodeTable()
 
                         return "    Element Damage: " .. concat
                     end
+                },
+                {
+                    type = "text",
+                    text = function()
+                        local concat = "???"
+
+                        if Equip.EquipmentData[0].BaseData then
+                            local modelid = EquipDataManager.WeaponBaseData.f_ModelId(Equip.EquipmentData[0].BaseData)
+
+                            if modelid then
+                                concat = tostring(modelid)
+                            end
+                        end
+
+                        return "    Model ID: " .. concat
+                    end
                 }
             }
         },
@@ -623,6 +639,40 @@ function UI.BuildNodeTable()
                             end
                         }
                     }
+                },
+                {
+                    type = "node",
+                    name = "Model",
+                    controls = {
+                        {
+                            type = "drag_int",
+                            text = "ID",
+                            speed = 0,
+                            min = 0,
+                            max = 2147483647,
+                            format = "%d",
+                            set_value = function (value)
+                                if Equip.EquipmentData[0].BaseData then
+                                    local modelid = EquipDataManager.WeaponBaseData.f_ModelId(Equip.EquipmentData[0].BaseData)
+        
+                                    if modelid then
+                                        EquipDataManager.WeaponBaseData.f_ModelId(Equip.EquipmentData[0].BaseData, value)
+                                    end
+                                end
+                            end,
+                            get_value = function ()
+                                if Equip.EquipmentData[0].BaseData then
+                                    local modelid = EquipDataManager.WeaponBaseData.f_ModelId(Equip.EquipmentData[0].BaseData)
+        
+                                    if modelid then
+                                        return modelid
+                                    end
+                                end
+        
+                                return 0
+                            end
+                        }
+                    }
                 }
             }
         }
@@ -642,6 +692,10 @@ function UI.DrawNodeTable( nodetable )
                     UI.DrawNodeTable({control})
                     changed = false
                     changed_value = nil
+                elseif control.type == "function" then
+                    control.draw()
+                    changed = false
+                    changed_value = nil
                 elseif control.type == "text" then
                     imgui.text(type(control.text) == "function" and control.text() or control.text)
                     changed = false
@@ -654,6 +708,10 @@ function UI.DrawNodeTable( nodetable )
                     imgui.same_line()
                     changed = false
                     changed_value = nil
+                elseif control.type == "button" then
+                    if imgui.button(control.text) then control.onclick() end
+                    changed = false
+                    changed_value = nil
                 elseif control.type == "checkbox" then
                     changed, changed_value = imgui.checkbox(control.text, control.get_value())
                 elseif control.type == "slider_int" then
@@ -664,13 +722,6 @@ function UI.DrawNodeTable( nodetable )
                     changed, changed_value = imgui.drag_int(control.text, control.get_value(), control.speed, control.min, control.max, control.format)
                 elseif control.type == "combo" then
                     changed, changed_value = imgui.combo(control.text, control.get_value(), control.values)
-                elseif control.type == "button" then
-                    if imgui.button(control.text) then
-                        control.onclick()
-                    end
-
-                    changed = false
-                    changed_value = nil
                 end
     
                 if changed and control.set_value then

@@ -1,12 +1,6 @@
 
 log.info("[MHR Menu] Menu loaded");
 
-------------------------------
--- Monster Hunter Rise Menu --
--- Version: dev-0.0.1       --
--- By: LuBuCake (Sr. Wesky) --
-------------------------------
-
 --< SINGLETONS >--
 
 local EquipDataManager = require("MHRMenu.singletons.EquipDataManager")
@@ -17,11 +11,13 @@ local DataManager = require("MHRMenu.singletons.DataManager")
 
 --< MODULES >--
 
+local Data = require("MHRMenu.data")
 local Settings = require("MHRMenu.settings")
 local Player = require("MHRMenu.player")
 local Equip = require("MHRMenu.equip")
 local UI = require("MHRMenu.ui")
 
+Data.Initialize()
 Settings.Initialize()
 Player.Initialize()
 Equip.Initialize()
