@@ -12,6 +12,7 @@ local PlayerManager = {}
 local SingletonObj = nil
 
 PlayerManager.Player = {}
+PlayerManager.Player.HunterWireGauge = {}
 PlayerManager.Player.Data = {}
 PlayerManager.Player.Data.VitalContext = {}
 
@@ -61,7 +62,25 @@ function PlayerManager.Player.f_Sharpness_Gauge( player, value ) return f_Field(
 function PlayerManager.Player.f_Sharpness_Gauge_Max( player, value ) return f_Field( player, "<SharpnessGaugeMax>k__BackingField", value ) end
 function PlayerManager.Player.f_Sharpness_Boost_Timer( player, value ) return f_Field( player, "_SharpnessGaugeBoostTimer", value ) end
 
--- Player Data
+function PlayerManager.Player.f_HunterWireGauge( player ) return f_Field( player, "_HunterWireGauge" ) end
+
+-- Hunter Wire Gauge
+
+function PlayerManager.Player.HunterWireGauge.GetFromCollection( player, index )
+    local collection = PlayerManager.Player.f_HunterWireGauge(player)
+
+    if collection then
+        return collection:get_element(index)
+    end
+
+    return nil
+end
+
+function PlayerManager.Player.HunterWireGauge.f_RecastTimer( wiregauge, value ) return f_Field( wiregauge, "_RecastTimer", value ) end
+function PlayerManager.Player.HunterWireGauge.f_RecastTimerMax( wiregauge, value ) return f_Field( wiregauge, "_RecastTimerMax", value ) end
+function PlayerManager.Player.HunterWireGauge.f_RecoverWaitTimer( wiregauge, value ) return f_Field( wiregauge, "_RecoverWaitTimer", value ) end
+
+-- Data
 
 function PlayerManager.Player.Data.f_VitalContext( data ) return f_Field( data, "_vitalContext" ) end
 function PlayerManager.Player.Data.f_Health( data, value ) return f_Field( data, "_r_Vital", value ) end

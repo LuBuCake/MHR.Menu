@@ -71,6 +71,25 @@ function Player.Update()
             PlayerManager.Player.Data.f_Stamina(Player.MasterPlayerData, PlayerManager.Player.Data.f_Stamina_Max(Player.MasterPlayerData))
         end
     end
+    
+    if Settings.Config.Player.HunterWireGauge.no_cooldown_toggle then
+        for index = 0, 2 do
+            local wiregauge = PlayerManager.Player.HunterWireGauge.GetFromCollection(Player.MasterPlayer, index)         
+
+            if wiregauge then
+                local recasttimer = PlayerManager.Player.HunterWireGauge.f_RecastTimer(wiregauge)
+                local recastertimermax = PlayerManager.Player.HunterWireGauge.f_RecastTimerMax(wiregauge)
+
+                if recasttimer ~= 0 then
+                    PlayerManager.Player.HunterWireGauge.f_RecastTimer(wiregauge, 0.0)
+                end
+
+                if recastertimermax ~= 0 then
+                    PlayerManager.Player.HunterWireGauge.f_RecastTimerMax(wiregauge, 0.0)
+                end
+            end
+        end
+    end
 end
 
 return Player

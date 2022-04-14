@@ -466,6 +466,17 @@ function UI.BuildNodeTable()
                     end
                 },
                 {
+                    type = "checkbox",
+                    text = "No Wirebug Cooldown",
+                    set_value = function (value)
+                        Settings.Config.Player.HunterWireGauge.no_cooldown_toggle = value
+                        Settings.Save()
+                    end,
+                    get_value = function ()
+                        return Settings.Config.Player.HunterWireGauge.no_cooldown_toggle
+                    end
+                },
+                {
                     type = "node",
                     name = "Sharpness",
                     controls = {
