@@ -173,15 +173,15 @@ function Data.Update()
         local iteminventorydata = DataManager.ItemInventoryData.GetFromCollection(inventorylist, index)
         if not iteminventorydata then goto continue end
 
-        local count = DataManager.ItemInventoryData.c_getCount(iteminventorydata)
+        local count = DataManager.ItemInventoryData.f_Num(iteminventorydata)
         if count <= 0 then goto continue end
 
         if Settings.Config.ItemBox.itemcount_cap_max_toggle and count > Settings.Config.ItemBox.itemcount_cap_max_value then
-            DataManager.ItemInventoryData.c_setNum(iteminventorydata, Settings.Config.ItemBox.itemcount_cap_max_value, true)
+            DataManager.ItemInventoryData.f_Num(iteminventorydata, Settings.Config.ItemBox.itemcount_cap_max_value)
         end
 
         if Settings.Config.ItemBox.itemcount_cap_min_toggle and count < Settings.Config.ItemBox.itemcount_cap_min_value then
-            DataManager.ItemInventoryData.c_setNum(iteminventorydata, Settings.Config.ItemBox.itemcount_cap_min_value, true)
+            DataManager.ItemInventoryData.f_Num(iteminventorydata, Settings.Config.ItemBox.itemcount_cap_min_value)
         end
 
         ::continue::

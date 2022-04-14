@@ -830,10 +830,10 @@ function UI.BuildNodeTable()
                                             local iteminventorydata = DataManager.ItemInventoryData.GetFromCollection(inventorylist, index)
                                             if not iteminventorydata then goto continue end
 
-                                            local count = DataManager.ItemInventoryData.c_getCount(iteminventorydata)
+                                            local count = DataManager.ItemInventoryData.f_Num(iteminventorydata)
                                             if count <= 0 then goto continue end
 
-                                            DataManager.ItemInventoryData.c_setNum(iteminventorydata, UI.ItemBox.ItemQuantitySet, true)
+                                            DataManager.ItemInventoryData.f_Num(iteminventorydata, UI.ItemBox.ItemQuantitySet)
 
                                             ::continue::
                                         end

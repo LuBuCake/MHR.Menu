@@ -102,6 +102,20 @@ function DataManager.ItemInventoryData.c_sub( iteminventorydata, count, autoempt
 function DataManager.ItemInventoryData.c_setNum( iteminventorydata, count, autoclear ) iteminventorydata:call("setNum(System.UInt32, System.Boolean)", count, autoclear) end
 function DataManager.ItemInventoryData.c_getCount( iteminventorydata ) return iteminventorydata:call("getCount") end
 
+function DataManager.ItemInventoryData.f_Id( iteminventorydata, value )
+    local itemcount = f_Field(iteminventorydata, "_ItemCount")
+    if not itemcount then return nil end
+
+    return f_Field(itemcount, "_Id", value)
+end
+
+function DataManager.ItemInventoryData.f_Num( iteminventorydata, value )
+    local itemcount = f_Field(iteminventorydata, "_ItemCount")
+    if not itemcount then return nil end
+
+    return f_Field(itemcount, "_Num", value)
+end
+
 --< END FIELDS || CALLS >--
 
 return DataManager
