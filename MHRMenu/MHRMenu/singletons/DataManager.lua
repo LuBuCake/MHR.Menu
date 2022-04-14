@@ -19,6 +19,9 @@ local SingletonObj = nil
 
 DataManager.VillagePointData = {}
 DataManager.HandMoney = {}
+DataManager.ItemBox = {}
+DataManager.InventoryList = {}
+DataManager.ItemInventoryData = {}
 
 function DataManager.Singleton()
     if SingletonObj ~= nil then return SingletonObj end
@@ -51,6 +54,8 @@ function DataManager.c_getHandMoney() return DataManager.Singleton():call("getHa
 
 function DataManager.f_VillagePointData() return f_Field(DataManager.Singleton(), "<VillagePointData>k__BackingField") end
 function DataManager.f_HandMoney() return f_Field(DataManager.Singleton(), "_HandMoney") end
+function DataManager.f_ItemPouch() return f_Field(DataManager.Singleton(), "_ItemPouch") end
+function DataManager.f_ItemBox() return f_Field(DataManager.Singleton(), "_PlItemBox") end
 
 -- VillagePointData
 
@@ -67,6 +72,35 @@ function DataManager.HandMoney.f_MinValue( handmoney, value ) return f_Field(han
 function DataManager.HandMoney.f_Value( handmoney, value ) return f_Field(handmoney, "_Value", value ) end
 function DataManager.HandMoney.f_TotalAddedValue( handmoney, value ) return f_Field(handmoney, "_TotalAddedValue", value) end
 function DataManager.HandMoney.f_DefaultMoney( handmoney, value ) return f_Field(handmoney, "DefaultMoney", value) end
+
+-- ItemBox
+
+function DataManager.ItemBox.f_InventoryList( itembox ) return f_Field(itembox, "_InventoryList") end
+
+-- InventoryList
+
+function DataManager.InventoryList.f_ItemInventoryDataCollection( inventorylist ) return f_Field(inventorylist, "mItems") end
+function DataManager.InventoryList.f_Size( inventorylist ) return f_Field(inventorylist, "mSize") end
+
+-- ItemInventoryData
+
+function DataManager.ItemInventoryData.GetFromCollection( inventorylist, index )
+    local collection = DataManager.InventoryList.f_ItemInventoryDataCollection(inventorylist)
+
+    if collection then
+        return collection:get_element(index)
+    end
+
+    return nil
+end
+
+function DataManager.ItemInventoryData.c_set( iteminventorydata, id, count, autoclear ) iteminventorydata:call("set(snow.data.ContentsIdSystem.ItemId, System.UInt32, System.Boolean)", id, count, autoclear) end
+function DataManager.ItemInventoryData.c_getId( iteminventorydata ) return iteminventorydata:call("getId") end
+function DataManager.ItemInventoryData.c_setId( iteminventorydata, id ) iteminventorydata:call("setId(snow.data.ContentsIdSystem.ItemId)", id) end
+function DataManager.ItemInventoryData.c_add( iteminventorydata, count ) iteminventorydata:call("add(System.Int32)", count) end
+function DataManager.ItemInventoryData.c_sub( iteminventorydata, count, autoempty ) iteminventorydata:call("sub(System.UInt32, System.Boolean)", count, autoempty) end
+function DataManager.ItemInventoryData.c_setNum( iteminventorydata, count, autoclear ) iteminventorydata:call("setNum(System.UInt32, System.Boolean)", count, autoclear) end
+function DataManager.ItemInventoryData.c_getCount( iteminventorydata ) return iteminventorydata:call("getCount") end
 
 --< END FIELDS || CALLS >--
 

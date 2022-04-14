@@ -20,6 +20,9 @@ local Player
 local Equip
 local Data
 
+local Math
+local Table
+
 --< END REFERENCE DEFINITION >--
 
 --< MODULE DEFINITION >--
@@ -29,10 +32,24 @@ local UI = {}
 UI.DrawUI = false
 UI.Nodes = nil
 
-UI.Window_Position = Vector2f.new(480, 200);
-UI.Window_Pivot = Vector2f.new(0, 0);
-UI.Window_Size = Vector2f.new(720, 720);
-UI.Window_Flags = 0x10120;
+UI.Window_Position = Vector2f.new(480, 200)
+UI.Window_Pivot = Vector2f.new(0, 0)
+UI.Window_Size = Vector2f.new(720, 720)
+UI.Window_Flags = 0x10120
+
+UI.Currency = {}
+UI.Currency.ZenniToModify = 10000
+UI.Currency.KamuraPointsToModify = 10000
+
+UI.WeaponModel = {}
+UI.WeaponModel.ModelID = 0
+UI.WeaponModel._ModelID = 0
+UI.WeaponModel.ModelTable = {}
+UI.WeaponModel._ModelTable = {}
+UI.WeaponModel.WeaponType = 0
+
+UI.ItemBox = {}
+UI.ItemBox.ItemQuantitySet = 100
 
 function UI.BuildNodeTable()
 
@@ -269,7 +286,7 @@ function UI.BuildNodeTable()
                             local element = EquipDataManager.WeaponBaseData.f_Element(Equip.EquipmentData[0].BaseData)
 
                             if element then
-                                concat = Data.Dictionary.Element[element]
+                                concat = Data.Dictionary.Element[element + 1]
                             end
                         end
 
@@ -318,15 +335,17 @@ function UI.BuildNodeTable()
                     name = "Kamura Points",
                     controls = {
                         {
-                            type = "button",
-                            text = "+1000",
-                            onclick = function()
-                                local villagepointdata = DataManager.f_VillagePointData()
-
-                                if villagepointdata then
-                                    local current = DataManager.VillagePointData.f_Point(villagepointdata)
-                                    DataManager.VillagePointData.f_Point(villagepointdata, current + 1000)
-                                end
+                            type = "drag_int",
+                            text = "",
+                            speed = 1,
+                            min = 1,
+                            max = 100000,
+                            format = "%d",
+                            set_value = function (value)
+                                UI.Currency.KamuraPointsToModify = value
+                            end,
+                            get_value = function ()
+                                return UI.Currency.KamuraPointsToModify
                             end
                         },
                         {
@@ -334,14 +353,33 @@ function UI.BuildNodeTable()
                         },
                         {
                             type = "button",
-                            text = "-1000",
+                            text = "Add",
                             onclick = function()
                                 local villagepointdata = DataManager.f_VillagePointData()
+                                if not villagepointdata then return end
 
-                                if villagepointdata then
-                                    local current = DataManager.VillagePointData.f_Point(villagepointdata)
-                                    DataManager.VillagePointData.f_Point(villagepointdata, current - 1000)
-                                end
+                                local villagepoint_max = DataManager.VillagePointData.f_MaxValue(villagepointdata)
+                                local villagepoint_min = DataManager.VillagePointData.f_MinValue(villagepointdata)
+
+                                local current = DataManager.VillagePointData.f_Point(villagepointdata)
+                                DataManager.VillagePointData.f_Point(villagepointdata, Math.Clamp(current + UI.Currency.KamuraPointsToModify, villagepoint_min, villagepoint_max))
+                            end
+                        },
+                        {
+                            type = "same_line"
+                        },
+                        {
+                            type = "button",
+                            text = "Sub",
+                            onclick = function()
+                                local villagepointdata = DataManager.f_VillagePointData()
+                                if not villagepointdata then return end
+
+                                local villagepoint_max = DataManager.VillagePointData.f_MaxValue(villagepointdata)
+                                local villagepoint_min = DataManager.VillagePointData.f_MinValue(villagepointdata)
+
+                                local current = DataManager.VillagePointData.f_Point(villagepointdata)
+                                DataManager.VillagePointData.f_Point(villagepointdata, Math.Clamp(current - UI.Currency.KamuraPointsToModify, villagepoint_min, villagepoint_max))
                             end
                         }
                     }
@@ -351,15 +389,17 @@ function UI.BuildNodeTable()
                     name = "Zenni",
                     controls = {
                         {
-                            type = "button",
-                            text = "+1000",
-                            onclick = function()
-                                local handmoney = DataManager.f_HandMoney()
-
-                                if handmoney then
-                                    local current = DataManager.HandMoney.f_Value(handmoney)
-                                    DataManager.HandMoney.f_Value(handmoney, current + 1000)
-                                end
+                            type = "drag_int",
+                            text = "",
+                            speed = 1,
+                            min = 1,
+                            max = 100000,
+                            format = "%d",
+                            set_value = function (value)
+                                UI.Currency.ZenniToModify = value
+                            end,
+                            get_value = function ()
+                                return UI.Currency.ZenniToModify
                             end
                         },
                         {
@@ -367,14 +407,33 @@ function UI.BuildNodeTable()
                         },
                         {
                             type = "button",
-                            text = "-1000",
+                            text = "Add",
                             onclick = function()
                                 local handmoney = DataManager.f_HandMoney()
+                                if not handmoney then return end
 
-                                if handmoney then
-                                    local current = DataManager.HandMoney.f_Value(handmoney)
-                                    DataManager.HandMoney.f_Value(handmoney, current - 1000)
-                                end
+                                local handmoney_max = DataManager.HandMoney.f_MaxValue(handmoney)
+                                local handmoney_min = DataManager.HandMoney.f_MinValue(handmoney)
+
+                                local current = DataManager.HandMoney.f_Value(handmoney)
+                                DataManager.HandMoney.f_Value(handmoney, Math.Clamp(current + UI.Currency.ZenniToModify, handmoney_min, handmoney_max))
+                            end
+                        },
+                        {
+                            type = "same_line"
+                        },
+                        {
+                            type = "button",
+                            text = "Sub",
+                            onclick = function()
+                                local handmoney = DataManager.f_HandMoney()
+                                if not handmoney then return end
+
+                                local handmoney_max = DataManager.HandMoney.f_MaxValue(handmoney)
+                                local handmoney_min = DataManager.HandMoney.f_MinValue(handmoney)
+
+                                local current = DataManager.HandMoney.f_Value(handmoney)
+                                DataManager.HandMoney.f_Value(handmoney, Math.Clamp(current - UI.Currency.ZenniToModify, handmoney_min, handmoney_max))
                             end
                         }
                     }
@@ -594,7 +653,7 @@ function UI.BuildNodeTable()
                                     local element = EquipDataManager.WeaponBaseData.f_Element(Equip.EquipmentData[0].BaseData)
         
                                     if element then
-                                        EquipDataManager.WeaponBaseData.f_Element(Equip.EquipmentData[0].BaseData, value)
+                                        EquipDataManager.WeaponBaseData.f_Element(Equip.EquipmentData[0].BaseData, value - 1)
                                     end
                                 end
                             end,
@@ -603,7 +662,7 @@ function UI.BuildNodeTable()
                                     local element = EquipDataManager.WeaponBaseData.f_Element(Equip.EquipmentData[0].BaseData)
         
                                     if element then
-                                        return element
+                                        return element + 1
                                     end
                                 end
         
@@ -641,36 +700,222 @@ function UI.BuildNodeTable()
                     }
                 },
                 {
+                    type = "function",
+                    draw = function()
+                        if not Equip.EquipmentData[0].BaseData then return end
+
+                        local weapontype = EquipDataManager.EquipmentInventoryData.c_get_DtWeaponType(Equip.EquipmentData[0].BaseData)
+                        local modelid = EquipDataManager.WeaponBaseData.f_ModelId(Equip.EquipmentData[0].BaseData)
+
+                        if UI.WeaponModel.WeaponType ~= weapontype then
+                            UI.WeaponModel.WeaponType = weapontype
+
+                            if weapontype == Data.Enum.WeaponTypes.GreatSword then
+                                UI.WeaponModel.ModelTable = Data.Dictionary.ModelID.GreatSword
+                                UI.WeaponModel._ModelTable = Data.Dictionary.ModelID._GreatSword
+                            elseif weapontype == Data.Enum.WeaponTypes.LongSword then
+                                UI.WeaponModel.ModelTable = Data.Dictionary.ModelID.LongSword
+                                UI.WeaponModel._ModelTable = Data.Dictionary.ModelID._LongSword
+                            elseif weapontype == Data.Enum.WeaponTypes.Lance then
+                                UI.WeaponModel.ModelTable = Data.Dictionary.ModelID.Lance
+                                UI.WeaponModel._ModelTable = Data.Dictionary.ModelID._Lance
+                            elseif weapontype == Data.Enum.WeaponTypes.GunLance then
+                                UI.WeaponModel.ModelTable = Data.Dictionary.ModelID.GunLance
+                                UI.WeaponModel._ModelTable = Data.Dictionary.ModelID._GunLance
+                            elseif weapontype == Data.Enum.WeaponTypes.ShortSword then
+                                UI.WeaponModel.ModelTable = Data.Dictionary.ModelID.ShortSword
+                                UI.WeaponModel._ModelTable = Data.Dictionary.ModelID._ShortSword
+                            elseif weapontype == Data.Enum.WeaponTypes.DualBlades then
+                                UI.WeaponModel.ModelTable = Data.Dictionary.ModelID.DualBlades
+                                UI.WeaponModel._ModelTable = Data.Dictionary.ModelID._DualBlades
+                            elseif weapontype == Data.Enum.WeaponTypes.Hammer then
+                                UI.WeaponModel.ModelTable = Data.Dictionary.ModelID.Hammer
+                                UI.WeaponModel._ModelTable = Data.Dictionary.ModelID._Hammer
+                            elseif weapontype == Data.Enum.WeaponTypes.Horn then
+                                UI.WeaponModel.ModelTable = Data.Dictionary.ModelID.Horn
+                                UI.WeaponModel._ModelTable = Data.Dictionary.ModelID._Horn
+                            elseif weapontype == Data.Enum.WeaponTypes.SlashAxe then
+                                UI.WeaponModel.ModelTable = Data.Dictionary.ModelID.SlashAxe
+                                UI.WeaponModel._ModelTable = Data.Dictionary.ModelID._SlashAxe
+                            elseif weapontype == Data.Enum.WeaponTypes.ChargeAxe then
+                                UI.WeaponModel.ModelTable = Data.Dictionary.ModelID.ChargeAxe
+                                UI.WeaponModel._ModelTable = Data.Dictionary.ModelID._ChargeAxe
+                            elseif weapontype == Data.Enum.WeaponTypes.InsectGlaive then
+                                UI.WeaponModel.ModelTable = Data.Dictionary.ModelID.InsectGlaive
+                                UI.WeaponModel._ModelTable = Data.Dictionary.ModelID._InsectGlaive
+                            elseif weapontype == Data.Enum.WeaponTypes.LightBowgun then
+                                UI.WeaponModel.ModelTable = Data.Dictionary.ModelID.LightBowgun
+                                UI.WeaponModel._ModelTable = Data.Dictionary.ModelID._LightBowgun
+                            elseif weapontype == Data.Enum.WeaponTypes.HeavyBowgun then
+                                UI.WeaponModel.ModelTable = Data.Dictionary.ModelID.HeavyBowgun
+                                UI.WeaponModel._ModelTable = Data.Dictionary.ModelID._HeavyBowgun
+                            elseif weapontype == Data.Enum.WeaponTypes.Bow then
+                                UI.WeaponModel.ModelTable = Data.Dictionary.ModelID.Bow
+                                UI.WeaponModel._ModelTable = Data.Dictionary.ModelID._Bow
+                            elseif weapontype == Data.Enum.WeaponTypes.Insect then
+                                UI.WeaponModel.ModelTable = Data.Dictionary.ModelID.Insect
+                                UI.WeaponModel._ModelTable = Data.Dictionary.ModelID._Insect
+                            end
+                        end
+
+                        if UI.WeaponModel.ModelID ~= modelid then
+                            UI.WeaponModel.ModelID = modelid
+
+                            Table.ForEach(UI.WeaponModel.ModelTable, function(key, value)
+                                if value.id == modelid then
+                                    UI.WeaponModel._ModelID = key
+                                    return true
+                                end
+                            end)
+                        end
+
+                        local changed = false
+                        local changed_value = nil
+
+                        if imgui.tree_node("Model") then
+
+                            changed, changed_value = imgui.combo("Selector", UI.WeaponModel._ModelID, UI.WeaponModel._ModelTable)
+
+                            if changed then
+                                EquipDataManager.WeaponBaseData.f_ModelId(Equip.EquipmentData[0].BaseData, UI.WeaponModel.ModelTable[changed_value].id)
+                            end
+
+                            imgui.tree_pop()
+                        end
+                    end
+                }
+            }
+        },
+        {
+            name = "Item Box",
+            controls = {
+                {
                     type = "node",
-                    name = "Model",
+                    name = "Quantities",
                     controls = {
                         {
-                            type = "drag_int",
-                            text = "ID",
-                            speed = 0,
-                            min = 0,
-                            max = 2147483647,
-                            format = "%d",
-                            set_value = function (value)
-                                if Equip.EquipmentData[0].BaseData then
-                                    local modelid = EquipDataManager.WeaponBaseData.f_ModelId(Equip.EquipmentData[0].BaseData)
-        
-                                    if modelid then
-                                        EquipDataManager.WeaponBaseData.f_ModelId(Equip.EquipmentData[0].BaseData, value)
+                            type = "node",
+                            name = "Set To",
+                            controls = {
+                                {
+                                    type = "drag_int",
+                                    text = "",
+                                    speed = 1,
+                                    min = 1,
+                                    max = 9999,
+                                    format = "%d",
+                                    set_value = function (value)
+                                        UI.ItemBox.ItemQuantitySet = value
+                                    end,
+                                    get_value = function ()
+                                        return UI.ItemBox.ItemQuantitySet
                                     end
-                                end
-                            end,
-                            get_value = function ()
-                                if Equip.EquipmentData[0].BaseData then
-                                    local modelid = EquipDataManager.WeaponBaseData.f_ModelId(Equip.EquipmentData[0].BaseData)
-        
-                                    if modelid then
-                                        return modelid
+                                },
+                                {
+                                    type = "same_line"
+                                },
+                                {
+                                    type = "button",
+                                    text = "Set",
+                                    onclick = function()
+                                        local itembox = DataManager.f_ItemBox()
+                                        if not itembox then return end
+
+                                        local inventorylist = DataManager.ItemBox.f_InventoryList(itembox)
+                                        if not inventorylist then return end
+
+                                        local size = DataManager.InventoryList.f_Size(inventorylist)
+
+                                        for index = 0, (size - 1) do
+                                            local iteminventorydata = DataManager.ItemInventoryData.GetFromCollection(inventorylist, index)
+                                            if not iteminventorydata then goto continue end
+
+                                            local count = DataManager.ItemInventoryData.c_getCount(iteminventorydata)
+                                            if count <= 0 then goto continue end
+
+                                            DataManager.ItemInventoryData.c_setNum(iteminventorydata, UI.ItemBox.ItemQuantitySet, true)
+
+                                            ::continue::
+                                        end
                                     end
-                                end
-        
-                                return 0
-                            end
+                                }
+                            }
+                        },
+                        {
+                            type = "node",
+                            name = "Cap",
+                            controls = {
+                                {
+                                    type = "node",
+                                    name = "Maximun",
+                                    controls = {
+                                        {
+                                            type = "drag_int",
+                                            text = "",
+                                            speed = 1,
+                                            min = 1,
+                                            max = 9999,
+                                            format = "%d",
+                                            set_value = function (value)
+                                                Settings.Config.ItemBox.itemcount_cap_max_value = value
+                                                Settings.Save()
+                                            end,
+                                            get_value = function ()
+                                                return Settings.Config.ItemBox.itemcount_cap_max_value
+                                            end
+                                        },
+                                        {
+                                            type = "same_line"
+                                        },
+                                        {
+                                            type = "checkbox",
+                                            text = "Enabled",
+                                            set_value = function (value)
+                                                Settings.Config.ItemBox.itemcount_cap_max_toggle = value
+                                                Settings.Save()
+                                            end,
+                                            get_value = function ()
+                                                return Settings.Config.ItemBox.itemcount_cap_max_toggle
+                                            end
+                                        }
+                                    }
+                                },
+                                {
+                                    type = "node",
+                                    name = "Minimun",
+                                    controls = {
+                                        {
+                                            type = "drag_int",
+                                            text = "",
+                                            speed = 1,
+                                            min = 1,
+                                            max = 9999,
+                                            format = "%d",
+                                            set_value = function (value)
+                                                Settings.Config.ItemBox.itemcount_cap_min_value = value
+                                                Settings.Save()
+                                            end,
+                                            get_value = function ()
+                                                return Settings.Config.ItemBox.itemcount_cap_min_value
+                                            end
+                                        },
+                                        {
+                                            type = "same_line"
+                                        },
+                                        {
+                                            type = "checkbox",
+                                            text = "Enabled",
+                                            set_value = function (value)
+                                                Settings.Config.ItemBox.itemcount_cap_min_toggle = value
+                                                Settings.Save()
+                                            end,
+                                            get_value = function ()
+                                                return Settings.Config.ItemBox.itemcount_cap_min_toggle
+                                            end
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -743,11 +988,11 @@ function UI.Draw()
 	if not UI.DrawUI then return end
 
     imgui.spacing()
-    imgui.text(" ------------------------------------------")
-    imgui.text("    Monster Hunter Rise Menu")
-    imgui.text("    Version: " .. Settings.Config.Version)
-    imgui.text("    By: LuBuCake (Sr. Wesky)")
-    imgui.text(" ------------------------------------------")
+    imgui.text("  ------------------------------------------")
+    imgui.text("     Monster Hunter Rise Menu")
+    imgui.text("     Version: " .. Settings.Config.Version)
+    imgui.text("     By: LuBuCake (Sr. Wesky)")
+    imgui.text("  ------------------------------------------")
     imgui.spacing()
 
     UI.DrawNodeTable(UI.Nodes)
@@ -763,6 +1008,9 @@ function UI.Initialize()
     Player = require("MHRMenu.player")
     Equip = require("MHRMenu.equip")
     Data = require("MHRMenu.data")
+
+    Math = require("MHRMenu.helpers.math")
+    Table = require("MHRMenu.helpers.table")
 
     UI.BuildNodeTable()
 end

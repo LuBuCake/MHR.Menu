@@ -52,7 +52,7 @@ end
 function Table.Merge( dest, source )
 
 	for k, v in pairs( source ) do
-		if ( Table.IsTable( v ) && Table.IsTable( dest[ k ] ) then
+		if Table.IsTable( v ) and Table.IsTable( dest[ k ] ) then
 			Table.Merge( dest[ k ], v )
 		else
 			dest[ k ] = v
@@ -164,7 +164,7 @@ end
 function Table.RemoveByValue( tbl, val )
 
 	local key = Table.KeyFromValue( tbl, val )
-	if ( !key ) then return false end
+	if ( not key ) then return false end
 
 	if ( isnumber( key ) ) then
 		table.remove( tbl, key )
@@ -179,7 +179,9 @@ end
 function Table.ForEach( tab, func )
 
 	for k, v in pairs( tab ) do
-		func( k, v )
+		if func( k, v ) then
+			break
+		end
 	end
 
 end

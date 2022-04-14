@@ -14,7 +14,7 @@ log.info("[MHR Menu] Settings loaded");
 local Settings = {}
 
 Settings.Config = {}
-Settings.Config.Version = "dev-0.0.1"
+Settings.Config.Version = "dev-0.0.2"
 
 Settings.Config.Player = {}
 Settings.Config.Player.health_max = false
@@ -23,6 +23,12 @@ Settings.Config.Player.sharpness_max_gauge = false
 Settings.Config.Player.sharpness_boost = false
 Settings.Config.Player.sharpness_lvl_toggle = false
 Settings.Config.Player.sharpness_lvl_value = 0
+
+Settings.Config.ItemBox = {}
+Settings.Config.ItemBox.itemcount_cap_max_toggle = false
+Settings.Config.ItemBox.itemcount_cap_min_toggle = false
+Settings.Config.ItemBox.itemcount_cap_max_value = 9999
+Settings.Config.ItemBox.itemcount_cap_min_value = 1
 
 function Settings.Load()
     local cfg = json.load_file("mhrmenu.json")

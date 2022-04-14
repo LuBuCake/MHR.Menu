@@ -11,14 +11,14 @@ local DataManager = require("MHRMenu.singletons.DataManager")
 
 --< MODULES >--
 
-local Data = require("MHRMenu.data")
 local Settings = require("MHRMenu.settings")
+local Data = require("MHRMenu.data")
 local Player = require("MHRMenu.player")
 local Equip = require("MHRMenu.equip")
 local UI = require("MHRMenu.ui")
 
-Data.Initialize()
 Settings.Initialize()
+Data.Initialize()
 Player.Initialize()
 Equip.Initialize()
 UI.Initialize()
@@ -37,17 +37,18 @@ end)
 
 re.on_frame(function()
 	if not reframework:is_drawing_ui() then
-		UI.DrawUI = false;
+		UI.DrawUI = false
 	end
 
 	if UI.DrawUI then
-		pcall(UI.Draw);
+		pcall(UI.Draw)
 	end
 end);
 
 re.on_pre_application_entry("UpdateBehavior", function()
     Player.Update()
 	Equip.Update()
+	Data.Update()
 end)
 
 --< END MOD LOGIC DEFINITION >--
