@@ -34,6 +34,8 @@ function Player.Update()
 
     Player.MasterPlayerData = PlayerManager.Player.f_Data(Player.MasterPlayer)
 
+    if not Player.MasterPlayerData then return end
+
     if Settings.Config.Player.sharpness_max_gauge then
         PlayerManager.Player.f_Sharpness_Gauge(Player.MasterPlayer, PlayerManager.Player.f_Sharpness_Gauge_Max(Player.MasterPlayer))
     end
@@ -89,6 +91,34 @@ function Player.Update()
                 end
             end
         end
+    end
+
+    if Settings.Config.Player.Buffs.demondrug_toggle then
+        PlayerManager.Player.Data.f_Demondrug_Power(Player.MasterPlayerData, Settings.Config.Player.Buffs.demondrug_power)
+    end
+
+    if Settings.Config.Player.Buffs.armorskin_toggle then
+        PlayerManager.Player.Data.f_Armorskin_Power(Player.MasterPlayerData, Settings.Config.Player.Buffs.armorskin_power)
+    end
+
+    if Settings.Config.Player.Buffs.mightseed_maxtimer_toggle then
+        PlayerManager.Player.Data.f_MightSeed_Power(Player.MasterPlayerData, Settings.Config.Player.Buffs.mightseed_power)
+        PlayerManager.Player.Data.f_MightSeed_Timer(Player.MasterPlayerData, 16200.0)
+    end
+
+    if Settings.Config.Player.Buffs.adamantseed_maxtimer_toggle then
+        PlayerManager.Player.Data.f_AdamantSeed_Power(Player.MasterPlayerData, Settings.Config.Player.Buffs.adamantseed_power)
+        PlayerManager.Player.Data.f_AdamantSeed_Timer(Player.MasterPlayerData, 16200.0)
+    end
+
+    if Settings.Config.Player.Buffs.demonpowder_maxtimer_toggle then
+        PlayerManager.Player.Data.f_DemonPowder_Power(Player.MasterPlayerData, Settings.Config.Player.Buffs.demonpowder_power)
+        PlayerManager.Player.Data.f_DemonPowder_Timer(Player.MasterPlayerData, 16200.0)
+    end
+
+    if Settings.Config.Player.Buffs.hardshellpowder_maxtimer_toggle then
+        PlayerManager.Player.Data.f_HardshellPowder_Power(Player.MasterPlayerData, Settings.Config.Player.Buffs.hardshellpowder_power)
+        PlayerManager.Player.Data.f_HardshellPowder_Timer(Player.MasterPlayerData, 16200.0)
     end
 end
 

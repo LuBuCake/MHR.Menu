@@ -7,6 +7,10 @@ local EquipDataManager = require("MHRMenu.singletons.EquipDataManager")
 local PlayerManager = require("MHRMenu.singletons.PlayerManager")
 local DataManager = require("MHRMenu.singletons.DataManager")
 
+EquipDataManager.Initialize()
+PlayerManager.Initialize()
+DataManager.Initialize()
+
 --< END SINGLETONS >--
 
 --< MODULES >--

@@ -7,6 +7,12 @@ log.info("[MHR Menu] DataManager loaded");
 
 --< REFERENCE DEFINITION >--
 
+local Object
+
+--< END REFERENCE DEFINITION >--
+
+--< REFERENCE DEFINITION >--
+
 local Singletons
 
 --< END REFERENCE DEFINITION >--
@@ -37,50 +43,40 @@ end
 
 --<< FIELDS || CALLS >>--
 
-local function f_Field( obj, field, value )
-    if not value then
-        return obj:get_field(field)
-    end
-
-    obj:set_field(field, value)
-
-    return value
-end
-
 -- Base
 
 function DataManager.c_get_VillagePointData() return DataManager.Singleton():call("get_VillagePointData") end
 function DataManager.c_getHandMoney() return DataManager.Singleton():call("getHandMoney") end
 
-function DataManager.f_VillagePointData() return f_Field(DataManager.Singleton(), "<VillagePointData>k__BackingField") end
-function DataManager.f_HandMoney() return f_Field(DataManager.Singleton(), "_HandMoney") end
-function DataManager.f_ItemPouch() return f_Field(DataManager.Singleton(), "_ItemPouch") end
-function DataManager.f_ItemBox() return f_Field(DataManager.Singleton(), "_PlItemBox") end
+function DataManager.f_VillagePointData() return Object.Field(DataManager.Singleton(), "<VillagePointData>k__BackingField") end
+function DataManager.f_HandMoney() return Object.Field(DataManager.Singleton(), "_HandMoney") end
+function DataManager.f_ItemPouch() return Object.Field(DataManager.Singleton(), "_ItemPouch") end
+function DataManager.f_ItemBox() return Object.Field(DataManager.Singleton(), "_PlItemBox") end
 
 -- VillagePointData
 
-function DataManager.VillagePointData.f_MaxValue( villagepointdata, value ) return f_Field(villagepointdata, "MaxValue", value) end
-function DataManager.VillagePointData.f_MinValue( villagepointdata, value ) return f_Field(villagepointdata, "MinValue", value) end
-function DataManager.VillagePointData.f_Point( villagepointdata, value ) return f_Field(villagepointdata, "_Point", value ) end
-function DataManager.VillagePointData.f_TotalAddedPoint( villagepointdata, value ) return f_Field(villagepointdata, "_TotalAddedPoint", value) end
-function DataManager.VillagePointData.f_DefaultPoint( villagepointdata, value ) return f_Field(villagepointdata, "DefaultPoint", value) end
+function DataManager.VillagePointData.f_MaxValue( villagepointdata, value ) return Object.Field(villagepointdata, "MaxValue", value) end
+function DataManager.VillagePointData.f_MinValue( villagepointdata, value ) return Object.Field(villagepointdata, "MinValue", value) end
+function DataManager.VillagePointData.f_Point( villagepointdata, value ) return Object.Field(villagepointdata, "_Point", value ) end
+function DataManager.VillagePointData.f_TotalAddedPoint( villagepointdata, value ) return Object.Field(villagepointdata, "_TotalAddedPoint", value) end
+function DataManager.VillagePointData.f_DefaultPoint( villagepointdata, value ) return Object.Field(villagepointdata, "DefaultPoint", value) end
 
 -- HandMoney
 
-function DataManager.HandMoney.f_MaxValue( handmoney, value ) return f_Field(handmoney, "MaxValue", value) end
-function DataManager.HandMoney.f_MinValue( handmoney, value ) return f_Field(handmoney, "MinValue", value) end
-function DataManager.HandMoney.f_Value( handmoney, value ) return f_Field(handmoney, "_Value", value ) end
-function DataManager.HandMoney.f_TotalAddedValue( handmoney, value ) return f_Field(handmoney, "_TotalAddedValue", value) end
-function DataManager.HandMoney.f_DefaultMoney( handmoney, value ) return f_Field(handmoney, "DefaultMoney", value) end
+function DataManager.HandMoney.f_MaxValue( handmoney, value ) return Object.Field(handmoney, "MaxValue", value) end
+function DataManager.HandMoney.f_MinValue( handmoney, value ) return Object.Field(handmoney, "MinValue", value) end
+function DataManager.HandMoney.f_Value( handmoney, value ) return Object.Field(handmoney, "_Value", value ) end
+function DataManager.HandMoney.f_TotalAddedValue( handmoney, value ) return Object.Field(handmoney, "_TotalAddedValue", value) end
+function DataManager.HandMoney.f_DefaultMoney( handmoney, value ) return Object.Field(handmoney, "DefaultMoney", value) end
 
 -- ItemBox
 
-function DataManager.ItemBox.f_InventoryList( itembox ) return f_Field(itembox, "_InventoryList") end
+function DataManager.ItemBox.f_InventoryList( itembox ) return Object.Field(itembox, "_InventoryList") end
 
 -- InventoryList
 
-function DataManager.InventoryList.f_ItemInventoryDataCollection( inventorylist ) return f_Field(inventorylist, "mItems") end
-function DataManager.InventoryList.f_Size( inventorylist ) return f_Field(inventorylist, "mSize") end
+function DataManager.InventoryList.f_ItemInventoryDataCollection( inventorylist ) return Object.Field(inventorylist, "mItems") end
+function DataManager.InventoryList.f_Size( inventorylist ) return Object.Field(inventorylist, "mSize") end
 
 -- ItemInventoryData
 
@@ -103,20 +99,24 @@ function DataManager.ItemInventoryData.c_setNum( iteminventorydata, count, autoc
 function DataManager.ItemInventoryData.c_getCount( iteminventorydata ) return iteminventorydata:call("getCount") end
 
 function DataManager.ItemInventoryData.f_Id( iteminventorydata, value )
-    local itemcount = f_Field(iteminventorydata, "_ItemCount")
+    local itemcount = Object.Field(iteminventorydata, "_ItemCount")
     if not itemcount then return nil end
 
-    return f_Field(itemcount, "_Id", value)
+    return Object.Field(itemcount, "_Id", value)
 end
 
 function DataManager.ItemInventoryData.f_Num( iteminventorydata, value )
-    local itemcount = f_Field(iteminventorydata, "_ItemCount")
+    local itemcount = Object.Field(iteminventorydata, "_ItemCount")
     if not itemcount then return nil end
 
-    return f_Field(itemcount, "_Num", value)
+    return Object.Field(itemcount, "_Num", value)
 end
 
 --< END FIELDS || CALLS >--
+
+function DataManager.Initialize()
+    Object = require("MHRMenu.helpers.object")
+end
 
 return DataManager
 

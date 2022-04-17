@@ -543,6 +543,324 @@ function UI.BuildNodeTable()
                             }
                         }
                     }
+                },
+                {
+                    type = "node",
+                    name = "Item Buffs",
+                    controls = {
+                        {
+                            type = "node",
+                            name = "Demondrug",
+                            controls = {
+                                {
+                                    type = "text",
+                                    text = "Current Value"
+                                },
+                                {
+                                    type = "same_line"
+                                },
+                                {
+                                    type = "drag_int",
+                                    text = "",
+                                    speed = 1,
+                                    min = 0,
+                                    max = 100000,
+                                    format = "%d",
+                                    set_value = function (value)
+                                        if not Player.MasterPlayerData then return end
+
+                                        PlayerManager.Player.Data.f_Demondrug_Power(Player.MasterPlayerData, value)
+                                        Settings.Config.Player.Buffs.demondrug_power = value
+                                    end,
+                                    get_value = function ()
+                                        if Settings.Config.Player.Buffs.demondrug_toggle then
+                                            return Settings.Config.Player.Buffs.demondrug_power
+                                        end
+
+                                        if Player.MasterPlayerData then
+                                            return PlayerManager.Player.Data.f_Demondrug_Power(Player.MasterPlayerData)
+                                        end
+
+                                        return 0
+                                    end
+                                },
+                                {
+                                    type = "same_line"
+                                },
+                                {
+                                    type = "checkbox",
+                                    text = "Freeze",
+                                    set_value = function (value)
+                                        Settings.Config.Player.Buffs.demondrug_toggle = value
+                                        Settings.Save()
+                                    end,
+                                    get_value = function ()
+                                        return Settings.Config.Player.Buffs.demondrug_toggle
+                                    end
+                                }
+                            }
+                        },
+                        {
+                            type = "node",
+                            name = "Armorskin",
+                            controls = {
+                                {
+                                    type = "text",
+                                    text = "Current Value"
+                                },
+                                {
+                                    type = "same_line"
+                                },
+                                {
+                                    type = "drag_int",
+                                    text = "",
+                                    speed = 1,
+                                    min = 0,
+                                    max = 100000,
+                                    format = "%d",
+                                    set_value = function (value)
+                                        if not Player.MasterPlayerData then return end
+
+                                        PlayerManager.Player.Data.f_Armorskin_Power(Player.MasterPlayerData, value)
+                                        Settings.Config.Player.Buffs.armorskin_power = value
+                                    end,
+                                    get_value = function ()
+                                        if Settings.Config.Player.Buffs.armorskin_toggle then
+                                            return Settings.Config.Player.Buffs.armorskin_power
+                                        end
+
+                                        if Player.MasterPlayerData then
+                                            return PlayerManager.Player.Data.f_Armorskin_Power(Player.MasterPlayerData)
+                                        end
+
+                                        return 0
+                                    end
+                                },
+                                {
+                                    type = "same_line"
+                                },
+                                {
+                                    type = "checkbox",
+                                    text = "Freeze",
+                                    set_value = function (value)
+                                        Settings.Config.Player.Buffs.armorskin_toggle = value
+                                        Settings.Save()
+                                    end,
+                                    get_value = function ()
+                                        return Settings.Config.Player.Buffs.armorskin_toggle
+                                    end
+                                }
+                            }
+                        },
+                        {
+                            type = "node",
+                            name = "Might Seed",
+                            controls = {
+                                {
+                                    type = "text",
+                                    text = "Current Value"
+                                },
+                                {
+                                    type = "same_line"
+                                },
+                                {
+                                    type = "drag_int",
+                                    text = "",
+                                    speed = 1,
+                                    min = 0,
+                                    max = 100000,
+                                    format = "%d",
+                                    set_value = function (value)
+                                        if not Player.MasterPlayerData then return end
+
+                                        PlayerManager.Player.Data.f_MightSeed_Power(Player.MasterPlayerData, value)
+                                        Settings.Config.Player.Buffs.mightseed_power = value
+                                    end,
+                                    get_value = function ()
+                                        if Settings.Config.Player.Buffs.mightseed_maxtimer_toggle then
+                                            return Settings.Config.Player.Buffs.mightseed_power
+                                        end
+
+                                        if Player.MasterPlayerData then
+                                            return PlayerManager.Player.Data.f_MightSeed_Power(Player.MasterPlayerData)
+                                        end
+
+                                        return 0
+                                    end
+                                },
+                                {
+                                    type = "same_line"
+                                },
+                                {
+                                    type = "checkbox",
+                                    text = "Freeze",
+                                    set_value = function (value)
+                                        Settings.Config.Player.Buffs.mightseed_maxtimer_toggle = value
+                                        Settings.Save()
+                                    end,
+                                    get_value = function ()
+                                        return Settings.Config.Player.Buffs.mightseed_maxtimer_toggle
+                                    end
+                                }
+                            }
+                        },
+                        {
+                            type = "node",
+                            name = "Adamant Seed",
+                            controls = {
+                                {
+                                    type = "text",
+                                    text = "Current Value"
+                                },
+                                {
+                                    type = "same_line"
+                                },
+                                {
+                                    type = "drag_int",
+                                    text = "",
+                                    speed = 1,
+                                    min = 0,
+                                    max = 100000,
+                                    format = "%d",
+                                    set_value = function (value)
+                                        if not Player.MasterPlayerData then return end
+
+                                        PlayerManager.Player.Data.f_AdamantSeed_Power(Player.MasterPlayerData, value)
+                                        Settings.Config.Player.Buffs.adamantseed_power = value
+                                    end,
+                                    get_value = function ()
+                                        if Settings.Config.Player.Buffs.adamantseed_maxtimer_toggle then
+                                            return Settings.Config.Player.Buffs.adamantseed_power
+                                        end
+
+                                        if Player.MasterPlayerData then
+                                            return PlayerManager.Player.Data.f_AdamantSeed_Power(Player.MasterPlayerData)
+                                        end
+
+                                        return 0
+                                    end
+                                },
+                                {
+                                    type = "same_line"
+                                },
+                                {
+                                    type = "checkbox",
+                                    text = "Freeze",
+                                    set_value = function (value)
+                                        Settings.Config.Player.Buffs.adamantseed_maxtimer_toggle = value
+                                        Settings.Save()
+                                    end,
+                                    get_value = function ()
+                                        return Settings.Config.Player.Buffs.adamantseed_maxtimer_toggle
+                                    end
+                                }
+                            }
+                        },
+                        {
+                            type = "node",
+                            name = "Demon Powder",
+                            controls = {
+                                {
+                                    type = "text",
+                                    text = "Current Value"
+                                },
+                                {
+                                    type = "same_line"
+                                },
+                                {
+                                    type = "drag_int",
+                                    text = "",
+                                    speed = 1,
+                                    min = 0,
+                                    max = 100000,
+                                    format = "%d",
+                                    set_value = function (value)
+                                        if not Player.MasterPlayerData then return end
+
+                                        PlayerManager.Player.Data.f_DemonPowder_Power(Player.MasterPlayerData, value)
+                                        Settings.Config.Player.Buffs.demonpowder_power = value
+                                    end,
+                                    get_value = function ()
+                                        if Settings.Config.Player.Buffs.demonpowder_maxtimer_toggle then
+                                            return Settings.Config.Player.Buffs.demonpowder_power
+                                        end
+
+                                        if Player.MasterPlayerData then
+                                            return PlayerManager.Player.Data.f_DemonPowder_Power(Player.MasterPlayerData)
+                                        end
+
+                                        return 0
+                                    end
+                                },
+                                {
+                                    type = "same_line"
+                                },
+                                {
+                                    type = "checkbox",
+                                    text = "Freeze",
+                                    set_value = function (value)
+                                        Settings.Config.Player.Buffs.demonpowder_maxtimer_toggle = value
+                                        Settings.Save()
+                                    end,
+                                    get_value = function ()
+                                        return Settings.Config.Player.Buffs.demonpowder_maxtimer_toggle
+                                    end
+                                }
+                            }
+                        },
+                        {
+                            type = "node",
+                            name = "Hardshell Powder",
+                            controls = {
+                                {
+                                    type = "text",
+                                    text = "Current Value"
+                                },
+                                {
+                                    type = "same_line"
+                                },
+                                {
+                                    type = "drag_int",
+                                    text = "",
+                                    speed = 1,
+                                    min = 0,
+                                    max = 100000,
+                                    format = "%d",
+                                    set_value = function (value)
+                                        if not Player.MasterPlayerData then return end
+
+                                        PlayerManager.Player.Data.f_HardshellPowder_Power(Player.MasterPlayerData, value)
+                                        Settings.Config.Player.Buffs.hardshellpowder_power = value
+                                    end,
+                                    get_value = function ()
+                                        if Settings.Config.Player.Buffs.hardshellpowder_maxtimer_toggle then
+                                            return Settings.Config.Player.Buffs.hardshellpowder_power
+                                        end
+
+                                        if Player.MasterPlayerData then
+                                            return PlayerManager.Player.Data.f_HardshellPowder_Power(Player.MasterPlayerData)
+                                        end
+
+                                        return 0
+                                    end
+                                },
+                                {
+                                    type = "same_line"
+                                },
+                                {
+                                    type = "checkbox",
+                                    text = "Freeze",
+                                    set_value = function (value)
+                                        Settings.Config.Player.Buffs.hardshellpowder_maxtimer_toggle = value
+                                        Settings.Save()
+                                    end,
+                                    get_value = function ()
+                                        return Settings.Config.Player.Buffs.hardshellpowder_maxtimer_toggle
+                                    end
+                                }
+                            }
+                        }
+                    }
                 }
             }
         },
@@ -558,7 +876,7 @@ function UI.BuildNodeTable()
                             text = "",
                             speed = 1,
                             min = 0,
-                            max = 1300,
+                            max = 99999,
                             format = "%d",
                             set_value = function (value)
                                 if Equip.EquipmentData[0].BaseData then
@@ -626,7 +944,7 @@ function UI.BuildNodeTable()
                             text = "",
                             speed = 1,
                             min = 0,
-                            max = 2000,
+                            max = 99999,
                             format = "%d",
                             set_value = function (value)
                                 if Equip.EquipmentData[0].BaseData then
