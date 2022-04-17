@@ -876,7 +876,7 @@ function UI.BuildNodeTable()
                             text = "",
                             speed = 1,
                             min = 0,
-                            max = 99999,
+                            max = 100000,
                             format = "%d",
                             set_value = function (value)
                                 if Equip.EquipmentData[0].BaseData then
@@ -944,7 +944,7 @@ function UI.BuildNodeTable()
                             text = "",
                             speed = 1,
                             min = 0,
-                            max = 99999,
+                            max = 100000,
                             format = "%d",
                             set_value = function (value)
                                 if Equip.EquipmentData[0].BaseData then
@@ -1003,7 +1003,7 @@ function UI.BuildNodeTable()
                             text = "Damage",
                             speed = 1,
                             min = 0,
-                            max = 1300,
+                            max = 100000,
                             format = "%d",
                             set_value = function (value)
                                 if Equip.EquipmentData[0].BaseData then

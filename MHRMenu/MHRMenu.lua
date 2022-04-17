@@ -31,15 +31,13 @@ UI.Initialize()
 
 --< MOD LOGIC DEFINITION >--
 
-re.on_config_save(Settings.Save)
-
-re.on_draw_ui(function()
+local function MHRMenu_OnDrawUI()
 	if imgui.button("MHR Menu") then
 		UI.DrawUI = not UI.DrawUI
 	end
-end)
+end
 
-re.on_frame(function()
+local function MHRMenu_OnFrame()
 	if not reframework:is_drawing_ui() then
 		UI.DrawUI = false
 	end
@@ -47,12 +45,21 @@ re.on_frame(function()
 	if UI.DrawUI then
 		pcall(UI.Draw)
 	end
-end);
+end
 
-re.on_pre_application_entry("UpdateBehavior", function()
-    Player.Update()
+local function MHRMenu_OnPreApplicationEntry()
+	Player.Update()
 	Equip.Update()
 	Data.Update()
-end)
+end
 
 --< END MOD LOGIC DEFINITION >--
+
+--< RE FRAMEWORK HOOKS >--
+
+re.on_config_save(Settings.Save)
+re.on_draw_ui(MHRMenu_OnDrawUI)
+re.on_frame(MHRMenu_OnFrame)
+re.on_pre_application_entry("UpdateBehavior", MHRMenu_OnPreApplicationEntry)
+
+--< END RE FRAMEWORK HOOKS >--
