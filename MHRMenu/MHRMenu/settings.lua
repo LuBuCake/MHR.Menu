@@ -14,11 +14,12 @@ log.info("[MHR Menu] Settings loaded");
 local Settings = {}
 
 Settings.Config = {}
-Settings.Config.Version = "dev-0.0.4"
+Settings.Config.Version = "dev-0.0.5"
 
 Settings.Config.Player = {}
 Settings.Config.Player.health_max = false
 Settings.Config.Player.stamina_max = false
+Settings.Config.Player.nohitstop = false
 Settings.Config.Player.sharpness_max_gauge = false
 Settings.Config.Player.sharpness_boost = false
 Settings.Config.Player.sharpness_lvl_toggle = false

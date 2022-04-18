@@ -467,6 +467,17 @@ function UI.BuildNodeTable()
                 },
                 {
                     type = "checkbox",
+                    text = "No Hit Stop",
+                    set_value = function (value)
+                        Settings.Config.Player.nohitstop = value
+                        Settings.Save()
+                    end,
+                    get_value = function ()
+                        return Settings.Config.Player.nohitstop
+                    end
+                },
+                {
+                    type = "checkbox",
                     text = "No Wirebug Cooldown",
                     set_value = function (value)
                         Settings.Config.Player.HunterWireGauge.no_cooldown_toggle = value
@@ -531,7 +542,7 @@ function UI.BuildNodeTable()
                                 },
                                 {
                                     type = "checkbox",
-                                    text = "Freeze",
+                                    text = "Frozen",
                                     set_value = function (value)
                                         Settings.Config.Player.sharpness_lvl_toggle = value
                                         Settings.Save()
@@ -589,7 +600,7 @@ function UI.BuildNodeTable()
                                 },
                                 {
                                     type = "checkbox",
-                                    text = "Freeze",
+                                    text = "Frozen",
                                     set_value = function (value)
                                         Settings.Config.Player.Buffs.demondrug_toggle = value
                                         Settings.Save()
@@ -641,7 +652,7 @@ function UI.BuildNodeTable()
                                 },
                                 {
                                     type = "checkbox",
-                                    text = "Freeze",
+                                    text = "Frozen",
                                     set_value = function (value)
                                         Settings.Config.Player.Buffs.armorskin_toggle = value
                                         Settings.Save()
@@ -693,7 +704,7 @@ function UI.BuildNodeTable()
                                 },
                                 {
                                     type = "checkbox",
-                                    text = "Freeze",
+                                    text = "Frozen",
                                     set_value = function (value)
                                         Settings.Config.Player.Buffs.mightseed_maxtimer_toggle = value
                                         Settings.Save()
@@ -745,7 +756,7 @@ function UI.BuildNodeTable()
                                 },
                                 {
                                     type = "checkbox",
-                                    text = "Freeze",
+                                    text = "Frozen",
                                     set_value = function (value)
                                         Settings.Config.Player.Buffs.adamantseed_maxtimer_toggle = value
                                         Settings.Save()
@@ -797,7 +808,7 @@ function UI.BuildNodeTable()
                                 },
                                 {
                                     type = "checkbox",
-                                    text = "Freeze",
+                                    text = "Frozen",
                                     set_value = function (value)
                                         Settings.Config.Player.Buffs.demonpowder_maxtimer_toggle = value
                                         Settings.Save()
@@ -849,7 +860,7 @@ function UI.BuildNodeTable()
                                 },
                                 {
                                     type = "checkbox",
-                                    text = "Freeze",
+                                    text = "Frozen",
                                     set_value = function (value)
                                         Settings.Config.Player.Buffs.hardshellpowder_maxtimer_toggle = value
                                         Settings.Save()

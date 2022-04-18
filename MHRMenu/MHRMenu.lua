@@ -16,12 +16,14 @@ DataManager.Initialize()
 --< MODULES >--
 
 local Settings = require("MHRMenu.settings")
+local Hooks = require("MHRMenu.hooks")
 local Data = require("MHRMenu.data")
 local Player = require("MHRMenu.player")
 local Equip = require("MHRMenu.equip")
 local UI = require("MHRMenu.ui")
 
 Settings.Initialize()
+Hooks.Initialize()
 Data.Initialize()
 Player.Initialize()
 Equip.Initialize()
@@ -63,3 +65,9 @@ re.on_frame(MHRMenu_OnFrame)
 re.on_pre_application_entry("UpdateBehavior", MHRMenu_OnPreApplicationEntry)
 
 --< END RE FRAMEWORK HOOKS >--
+
+--< SDK HOOKS >--
+
+sdk.hook(Hooks.NoHitStop.Object(), Hooks.NoHitStop.Func, Hooks.NoHitStop.Func_Ret)
+
+--< END SDK HOOKS >--
