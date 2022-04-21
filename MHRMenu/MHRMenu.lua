@@ -1,5 +1,5 @@
 
-log.info("[MHR Menu] Menu loaded");
+log.info("[MHR Menu] Menu loaded")
 
 --< SINGLETONS >--
 

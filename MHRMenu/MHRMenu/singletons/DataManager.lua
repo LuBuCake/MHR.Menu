@@ -1,5 +1,5 @@
 
-log.info("[MHR Menu] DataManager loaded");
+log.info("[MHR Menu] DataManager loaded")
 
 --------------------------
 -- MHR Menu DataManager --
@@ -70,6 +70,8 @@ function DataManager.HandMoney.f_TotalAddedValue( handmoney, value ) return Obje
 function DataManager.HandMoney.f_DefaultMoney( handmoney, value ) return Object.Field(handmoney, "DefaultMoney", value) end
 
 -- ItemBox
+
+function DataManager.ItemBox.c_tryAddGameItem( itembox, itemid, count) itembox:call("tryAddGameItem(snow.data.ContentsIdSystem.ItemId, System.Int32)", itemid, count) end
 
 function DataManager.ItemBox.f_InventoryList( itembox ) return Object.Field(itembox, "_InventoryList") end
 

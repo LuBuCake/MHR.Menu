@@ -1,5 +1,5 @@
 
-log.info("[MHR Menu] PlayerManager loaded");
+log.info("[MHR Menu] PlayerManager loaded")
 
 ----------------------------
 -- MHR Menu PlayerManager --

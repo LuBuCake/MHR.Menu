@@ -1,5 +1,5 @@
 
-log.info("[MHR Menu] Player loaded");
+log.info("[MHR Menu] Player loaded")
 
 ---------------------
 -- MHR Menu Player --
@@ -104,21 +104,29 @@ function Player.Update()
     if Settings.Config.Player.Buffs.mightseed_maxtimer_toggle then
         PlayerManager.Player.Data.f_MightSeed_Power(Player.MasterPlayerData, Settings.Config.Player.Buffs.mightseed_power)
         PlayerManager.Player.Data.f_MightSeed_Timer(Player.MasterPlayerData, 16200.0)
+    else
+        Settings.Config.Player.Buffs.mightseed_power = PlayerManager.Player.Data.f_MightSeed_Power(Player.MasterPlayerData)
     end
 
     if Settings.Config.Player.Buffs.adamantseed_maxtimer_toggle then
         PlayerManager.Player.Data.f_AdamantSeed_Power(Player.MasterPlayerData, Settings.Config.Player.Buffs.adamantseed_power)
         PlayerManager.Player.Data.f_AdamantSeed_Timer(Player.MasterPlayerData, 16200.0)
+    else
+        Settings.Config.Player.Buffs.adamantseed_power = PlayerManager.Player.Data.f_AdamantSeed_Power(Player.MasterPlayerData)
     end
 
     if Settings.Config.Player.Buffs.demonpowder_maxtimer_toggle then
         PlayerManager.Player.Data.f_DemonPowder_Power(Player.MasterPlayerData, Settings.Config.Player.Buffs.demonpowder_power)
         PlayerManager.Player.Data.f_DemonPowder_Timer(Player.MasterPlayerData, 16200.0)
+    else
+        Settings.Config.Player.Buffs.demonpowder_power = PlayerManager.Player.Data.f_DemonPowder_Power(Player.MasterPlayerData)
     end
 
     if Settings.Config.Player.Buffs.hardshellpowder_maxtimer_toggle then
         PlayerManager.Player.Data.f_HardshellPowder_Power(Player.MasterPlayerData, Settings.Config.Player.Buffs.hardshellpowder_power)
         PlayerManager.Player.Data.f_HardshellPowder_Timer(Player.MasterPlayerData, 16200.0)
+    else
+        Settings.Config.Player.Buffs.hardshellpowder_power = PlayerManager.Player.Data.f_HardshellPowder_Power(Player.MasterPlayerData)
     end
 end
 

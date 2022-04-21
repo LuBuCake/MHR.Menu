@@ -18,8 +18,6 @@ function Table.Copy( t, lookup_table )
 
 	local copy = {}
 
-	setmetatable(copy, debug.getmetatable(t))
-
 	for i, v in pairs(t) do
 		if not Table.IsTable(v) then
 			copy[i] = v

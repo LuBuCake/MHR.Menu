@@ -1,5 +1,5 @@
 
-log.info("[MHR Menu] Equip loaded");
+log.info("[MHR Menu] Equip loaded")
 
 -------------------
 -- MHR Menu Data --

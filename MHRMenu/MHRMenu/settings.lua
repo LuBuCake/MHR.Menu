@@ -1,5 +1,5 @@
 
-log.info("[MHR Menu] Settings loaded");
+log.info("[MHR Menu] Settings loaded")
 
 -----------------------
 -- MHR Menu Settings --
@@ -14,7 +14,7 @@ log.info("[MHR Menu] Settings loaded");
 local Settings = {}
 
 Settings.Config = {}
-Settings.Config.Version = "dev-0.0.5"
+Settings.Config.Version = "dev-0.0.7"
 
 Settings.Config.Player = {}
 Settings.Config.Player.health_max = false
@@ -26,6 +26,7 @@ Settings.Config.Player.sharpness_lvl_toggle = false
 Settings.Config.Player.sharpness_lvl_value = 0
 
 Settings.Config.Player.Buffs = {}
+
 Settings.Config.Player.Buffs.demondrug_power = 7
 Settings.Config.Player.Buffs.armorskin_power = 25
 Settings.Config.Player.Buffs.mightseed_power = 10
@@ -54,11 +55,13 @@ function Settings.Load()
 
     if cfg and cfg.Version == Settings.Config.Version then
         Settings.Config = cfg
+        log.info("[MHR Menu] Settings loaded from file.")
     end
 end
 
 function Settings.Save()
     json.dump_file("mhrmenu.json", Settings.Config)
+    log.info("[MHR Menu] Settings saved to file.")
 end
 
 function Settings.Initialize()

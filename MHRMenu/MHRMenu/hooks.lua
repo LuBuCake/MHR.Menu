@@ -1,5 +1,5 @@
 
-log.info("[MHR Menu] Hooks loaded");
+log.info("[MHR Menu] Hooks loaded")
 
 -------------------
 -- MHR Menu Data --

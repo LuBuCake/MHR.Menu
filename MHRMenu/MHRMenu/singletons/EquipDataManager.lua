@@ -1,5 +1,5 @@
 
-log.info("[MHR Menu] EquipDataManager loaded");
+log.info("[MHR Menu] EquipDataManager loaded")
 
 -------------------------------
 -- MHR Menu EquipDataManager --

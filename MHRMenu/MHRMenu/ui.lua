@@ -51,6 +51,12 @@ UI.WeaponModel.WeaponType = 0
 UI.ItemBox = {}
 UI.ItemBox.ItemQuantitySet = 100
 
+UI.ItemBox.ItemToAdd = {}
+UI.ItemBox.ItemToAddID = {}
+UI.ItemBox.ItemToAddFilter = ""
+UI.ItemBox.ItemToAddSelected = 0
+UI.ItemBox.ItemToAddSelectedCount = 1
+
 function UI.BuildNodeTable()
 
     UI.Nodes = {
@@ -685,6 +691,7 @@ function UI.BuildNodeTable()
                                         if not Player.MasterPlayerData then return end
 
                                         PlayerManager.Player.Data.f_MightSeed_Power(Player.MasterPlayerData, value)
+                                        PlayerManager.Player.Data.f_MightSeed_Timer(Player.MasterPlayerData, 16200.0)
                                         Settings.Config.Player.Buffs.mightseed_power = value
                                     end,
                                     get_value = function ()
@@ -737,6 +744,7 @@ function UI.BuildNodeTable()
                                         if not Player.MasterPlayerData then return end
 
                                         PlayerManager.Player.Data.f_AdamantSeed_Power(Player.MasterPlayerData, value)
+                                        PlayerManager.Player.Data.f_AdamantSeed_Timer(Player.MasterPlayerData, 16200.0)
                                         Settings.Config.Player.Buffs.adamantseed_power = value
                                     end,
                                     get_value = function ()
@@ -789,6 +797,7 @@ function UI.BuildNodeTable()
                                         if not Player.MasterPlayerData then return end
 
                                         PlayerManager.Player.Data.f_DemonPowder_Power(Player.MasterPlayerData, value)
+                                        PlayerManager.Player.Data.f_DemonPowder_Timer(Player.MasterPlayerData, 16200.0)
                                         Settings.Config.Player.Buffs.demonpowder_power = value
                                     end,
                                     get_value = function ()
@@ -841,6 +850,7 @@ function UI.BuildNodeTable()
                                         if not Player.MasterPlayerData then return end
 
                                         PlayerManager.Player.Data.f_HardshellPowder_Power(Player.MasterPlayerData, value)
+                                        PlayerManager.Player.Data.f_HardshellPowder_Timer(Player.MasterPlayerData, 16200.0)
                                         Settings.Config.Player.Buffs.hardshellpowder_power = value
                                     end,
                                     get_value = function ()
@@ -1131,6 +1141,91 @@ function UI.BuildNodeTable()
             controls = {
                 {
                     type = "node",
+                    name = "Add Item",
+                    controls = {
+                        {
+                            type = "input_text",
+                            text = "Filter",
+                            set_value = function(value)
+                                UI.ItemBox.ItemToAddFilter = value
+                                UI.ItemBox.ItemToAddSelected = 0
+
+                                if value == "" then
+                                    UI.ItemBox.ItemToAdd = Data.Dictionary.ItemName
+                                    UI.ItemBox.ItemToAddID = Data.Dictionary.ItemID
+                                    return
+                                end
+
+                                UI.ItemBox.ItemToAdd = {}
+                                UI.ItemBox.ItemToAddID = {}
+
+                                local newindex = 0
+
+                                for k,v in pairs(Data.Dictionary.ItemName) do
+                                    if not string.find(string.lower(v), string.lower(value)) then
+                                        goto continue
+                                    end
+
+                                    UI.ItemBox.ItemToAdd[newindex] = Data.Dictionary.ItemName[k]
+                                    UI.ItemBox.ItemToAddID[newindex] = Data.Dictionary.ItemID[k]
+                                    newindex = newindex + 1
+
+                                    ::continue::
+                                end
+                            end,
+                            get_value = function()
+                                return UI.ItemBox.ItemToAddFilter
+                            end
+                        },
+                        {
+                            type = "combo",
+                            text = "Item",
+                            values = function()
+                                return UI.ItemBox.ItemToAdd
+                            end,
+                            set_value = function (value)
+                                UI.ItemBox.ItemToAddSelected = value
+                            end,
+                            get_value = function ()
+                                return UI.ItemBox.ItemToAddSelected
+                            end
+                        },
+                        {
+                            type = "drag_int",
+                            text = "Quantity",
+                            speed = 1,
+                            min = 1,
+                            max = 9999,
+                            format = "%d",
+                            set_value = function (value)
+                                UI.ItemBox.ItemToAddSelectedCount = value
+                            end,
+                            get_value = function ()
+                                return UI.ItemBox.ItemToAddSelectedCount
+                            end
+                        },
+                        {
+                            type = "same_line"
+                        },
+                        {
+                            type = "button",
+                            text = "Add To Item Box",
+                            onclick = function ()
+                                if Table.Count(UI.ItemBox.ItemToAddID) <= 0 then return end
+
+                                local itembox = DataManager.f_ItemBox()
+                                if not itembox then return end
+
+                                local itemid = UI.ItemBox.ItemToAddID[UI.ItemBox.ItemToAddSelected]
+                                local count = UI.ItemBox.ItemToAddSelectedCount
+
+                                DataManager.ItemBox.c_tryAddGameItem(itembox, itemid, count)
+                            end
+                        }
+                    }
+                },
+                {
+                    type = "node",
                     name = "Quantities",
                     controls = {
                         {
@@ -1306,7 +1401,9 @@ function UI.DrawNodeTable( nodetable )
                 elseif control.type == "drag_int" then
                     changed, changed_value = imgui.drag_int(control.text, control.get_value(), control.speed, control.min, control.max, control.format)
                 elseif control.type == "combo" then
-                    changed, changed_value = imgui.combo(control.text, control.get_value(), control.values)
+                    changed, changed_value = imgui.combo(control.text, control.get_value(), type(control.values) == "function" and control.values() or control.values)
+                elseif control.type == "input_text" then
+                    changed, changed_value = imgui.input_text(control.text, control.get_value())
                 end
     
                 if changed and control.set_value then
@@ -1351,6 +1448,9 @@ function UI.Initialize()
 
     Math = require("MHRMenu.helpers.math")
     Table = require("MHRMenu.helpers.table")
+
+    UI.ItemBox.ItemToAdd = Data.Dictionary.ItemName
+    UI.ItemBox.ItemToAddID = Data.Dictionary.ItemID
 
     UI.BuildNodeTable()
 end
